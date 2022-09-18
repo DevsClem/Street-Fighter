@@ -1,0 +1,343 @@
+<style>
+	body{
+		background-color: black;
+	}
+
+	#background{
+		width: 800px;
+		height: 260px;
+		background: url('background.gif');
+		background-size: cover;
+		background-position: center;
+	}
+
+	#character1{
+		background: url('ken.png') 0px -80px;
+		width: 70px;
+		height: 80px;
+		position: absolute;
+	}
+
+	.wave{
+		background: url('ken.png') 0px -320px;
+		width: 70px;
+		height: 80px;
+		position: absolute;
+	}
+
+	#character2{
+		background: url('ken.png') -0px -80px;
+		width: 70px;
+		height: 80px;
+		position: absolute;
+		transform: scaleX(-1);
+	}
+
+	#healthbar1{
+		width: 200px;
+		height: 15px;
+		background-color: yellow;
+		border: 3px solid white;
+		position: absolute;
+		top: 30px;
+		left: 169px;
+	}
+
+	#healthbar2{
+		width: 200px;
+		height: 15px;
+		background-color: yellow;
+		border: 3px solid white;
+		position: absolute;
+		top: 30px;
+		left: 431px;
+	}
+
+	#underhealthbar1{
+		width: 225px;
+		height: 15px;
+		background-color: red;
+		border: 3px solid white;
+		position: absolute;
+		top: 30px;
+		left: 169px;
+	}
+
+	#underhealthbar2{
+		width: 230px;
+		height: 15px;
+		background-color: red;
+		border: 3px solid white;
+		position: absolute;
+		top: 30px;
+		left: 431px;
+	}
+
+	#ko{
+		width: 25px;
+		height: 15px;
+		background-color: red;
+		border: 3px solid black;
+		position: absolute;
+		top: 30px;
+		left: 400px;
+		color: white;
+		font-size: 105%;
+		letter-spacing: -2px;
+		line-height: 1;
+	}
+
+	#timer{
+		width: 25px;
+		height: 15px;
+		background-color: red;
+		border: 3px solid black;
+		position: absolute;
+		top: 55px;
+		left: 400px;
+		color: white;
+		font-size: 105%;
+		line-height: 1;
+		text-align: center;
+	}
+</style>
+
+<div id='background'>
+	<div id='character1'></div>
+	<div id='waves'></div>
+	<div id='character2'></div>
+	<div id='underhealthbar1'></div>
+	<div id='healthbar1'></div>
+	<div id='ko'><b>KO</b></div>
+	<div id='timer'><b></b></div>
+	<div id='underhealthbar2'></div>
+	<div id='healthbar2'></div>
+</div>
+
+<script>
+	
+	var action = 'STANDING';
+	var character1 = {
+		top: 185,
+		left: 100,
+		health: 100,
+		which_frame: 0,
+		action:'STANDING'
+	}
+	var character2 = {
+		top: 185,
+		left: 400,
+		health: 100,
+		which_frame: 0,
+		action:'STANDING'
+	}
+	var wave = [];
+	var timer = 30;
+	var gameLoop = setInterval(GameLoop, 80);
+	var countDownLoop = setInterval(countDown, 1000);
+
+	function countDown(){
+		document.getElementById('timer').innerHTML = timer;
+		if(timer > 0){
+			timer -= 1;
+		}
+		else if(timer == 0){
+			if(character1.health > character2.health){
+					endGame('Time Ran Out\nPlayer 1 Wins');
+			}
+			else if(character1.health < character2.health){
+				endGame('Time Ran Out\nPlayer 2 Wins');
+			}
+			else if(character1.health == character2.health){
+				endGame('Time Ran Out\nDraw');
+			}
+		}
+	}
+	
+	function GameLoop(){
+		displayCharacters();
+		displayActions('character1',character1,character2);
+		moveBot();
+		displayActions('character2',character2,character1);
+		displayCharacters();
+		moveWave(); 
+		win();
+	}
+	
+	function endGame(message){
+        clearInterval(countDownLoop);
+		clearInterval(gameLoop);
+        window.confirm(message);
+        location.reload();
+    }
+
+	function displayCharacters(){
+		document.getElementById('character1').style.top = character1.top;
+		document.getElementById('character1').style.left = character1.left;
+
+		document.getElementById('character2').style.top = character2.top;
+		document.getElementById('character2').style.left = character2.left;
+
+		document.getElementById('healthbar1').style.width = character1.health * 2.3;
+		document.getElementById('healthbar2').style.width = character2.health * 2.3;
+	}
+
+	function displayWave(){
+		var output = '';
+		for(var i = 0; i < wave.length; i++){
+			output += "<div class='wave' style='top:" + wave[i].top + "px; left:" + wave[i].left + "px;'> </div>"
+		}
+		document.getElementById('waves').innerHTML = output;
+	}
+
+	function moveWave(){
+		for(var i = 0; i < wave.length; i++){
+			wave[i].left += 5;
+			if(wave[i].left > character2.left - 10) {//wave and enemy collision
+				character2.health = character2.health - 10;
+				wave[i] = wave[wave.length - 1];
+				wave.pop();
+			}
+		}
+		displayWave();
+	}
+
+	function win(){
+		if(character2.health < 0){
+			endGame("KO\nPlayer 1 Wins");
+		} 
+		else if(character1.health < 0){
+			endGame("KO\nPlayer 2 Wins");
+		}
+	}
+
+	function moveBot(){
+		var move = Math.floor(Math.random() * 5) + 1;
+		if(move == 1 && character2.left > 0){ //left
+			character2.left = character2.left - 10;
+			character2.action  = "LEFT";
+		}
+		else if(move == 2 && character2.left < 800){ //right
+			character2.left = character2.left + 10;
+			character2.action  = "RIGHT";
+		}
+		else if(move == 3){
+			character2.action  = 'SIDE_KICK';
+		}
+		displayCharacters();
+		//character2.which_frame= 0;
+	}
+
+	function displayActions(characterName,character,enemyCharacter){
+		if(character.action == 'STANDING'){
+			document.getElementById(characterName).style.background = "url('ken.png') -" + character.which_frame * 70 + "px -80px";
+			character.which_frame = character.which_frame + 1;
+			if(character.which_frame >= 4){
+				character.which_frame = 0;
+			}
+		}
+		if(character.action == 'RIGHT' || character.action == 'LEFT'){
+			document.getElementById(characterName).style.background = "url('ken.png') -" + character.which_frame * 70 + "px -240px";
+			character.which_frame = character.which_frame + 1;
+			if(character.which_frame >= 4){
+				character.which_frame = 0;
+				character.action = 'STANDING';
+			}
+		}
+		if(character.action == 'DUCK'){
+			document.getElementById(characterName).style.background = "url('ken.png') -" + character.which_frame * 70 + "px -720px";
+			character.which_frame = character.which_frame + 1;
+			if(character.which_frame >= 1){
+				character.which_frame = 0;
+				character.action = 'STANDING';
+			}
+		}
+		else if(character.action == 'JUMP'){
+			document.getElementById(characterName).style.background = "url('ken.png') -" + character.which_frame * 70 + "px -640px";
+			character.which_frame = character.which_frame + 1;
+			if(character.which_frame == 4){
+				character.top -= 40;
+			}
+			if(character.which_frame >= 7){
+				character.which_frame = 0;
+				character.top = 185;
+				character.action = 'STANDING';
+			}
+		}
+		else if(character.action == 'PUNCH'){
+			if(character.which_frame == 2 && character.left > enemyCharacter.left - 60 && character.left < enemyCharacter.left + 10) {
+				enemyCharacter.health = enemyCharacter.health - 10;;
+			}
+			document.getElementById(characterName).style.background = "url('ken.png') -" + character.which_frame * 70 + "px -160px";
+			character.which_frame = character.which_frame + 1;
+			if(character.which_frame >= 3){
+				character.which_frame = 0;
+				character.action = 'STANDING';
+			}
+		}
+		else if(character.action == 'ROUND_KICK'){
+			if(character.which_frame == 2 && character.left > enemyCharacter.left - 60 && character.left < enemyCharacter.left + 70) {
+				enemyCharacter.health = enemyCharacter.health - 10;
+			}
+			document.getElementById(characterName).style.background = "url('ken.png') -" + character.which_frame * 70 + "px -560px";
+			character.which_frame = character.which_frame + 1;
+			if(character.which_frame >= 5) {
+				character.which_frame = 0;
+				character.action = 'STANDING';
+			}
+		}
+		else if(character.action == 'SIDE_KICK'){
+			if(character.which_frame == 2 && character.left > enemyCharacter.left - 70 && character.left < enemyCharacter.left + 70) {
+				enemyCharacter.health = enemyCharacter.health - 10;
+			}
+			document.getElementById(characterName).style.background = "url('ken.png') -" + character.which_frame * 70 + "px -480px";
+			character.which_frame = character.which_frame + 1;
+			if(character.which_frame >= 5) {
+				character.which_frame = 0;
+				character.action = 'STANDING';
+			}
+		}
+		else if(character.action == 'WAVE'){
+			document.getElementById(characterName).style.background = "url('ken.png') -" + character.which_frame * 70 + "px 0px";
+			character.which_frame = character.which_frame + 1;
+			if (character.which_frame >= 4) {
+				character.which_frame = 0;
+				character.action = 'STANDING';
+			}
+		}
+	} 
+
+	document.onkeydown = function (e) {
+		if(e.keyCode == 37 && character1.left > 0){ //left
+			character1.left = character1.left - 10;
+			character1.action = "LEFT";
+		}
+		else if(e.keyCode == 39 && character1.left < 800){ //right
+			character1.left = character1.left + 10;
+			character1.action = "RIGHT";
+		}
+		else if(e.keyCode == 38){
+			character1.action = 'JUMP';
+		}
+		else if(e.keyCode == 40){
+			character1.action = 'DUCK';
+		}
+		else if(e.keyCode == 188){
+			character1.action = 'SIDE_KICK';
+		}
+		else if(e.keyCode == 190){
+			character1.action = 'PUNCH';
+		}
+		else if(e.keyCode == 191){
+			character1.action = 'ROUND_KICK';
+		}
+		else if (e.keyCode == 77){
+			character1.action = 'WAVE';
+			wave.push({top: character1.top, left: character1.left + 20})
+			displayWave();
+		}
+		character1.which_frame = 0;
+		displayCharacters();
+	}
+
+</script>

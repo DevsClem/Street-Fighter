@@ -1,0 +1,162 @@
+<html>
+<script>
+
+var character1 = {
+    which_frame: 0
+}
+console.log(character1.which_frame);
+
+function sample(character){
+    character.which_frame += 1;
+}
+
+/* function gameLoop(){
+    sample(character1);
+    //console.log(character1.which_frame);
+    
+} */
+
+sample(character1);
+//setInterval(gameLoop, 100);
+console.log(character1.which_frame);
+
+
+
+
+/* function displayEnemyActions(character){
+		if(enemy_action  == 'STANDING'){
+			document.getElementById(character).style.background = "url('ken.png') -" + enemy_frame * 70 + "px -80px";
+			enemy_frame = enemy_frame + 1;
+			if(enemy_frame >= 4){
+				enemy_frame = 0;
+			}
+		}
+		if(enemy_action  == 'RIGHT' || enemy_action  == 'LEFT'){
+			document.getElementById(character).style.background = "url('ken.png') -" + enemy_frame * 70 + "px -240px";
+			enemy_frame = enemy_frame + 1;
+			if(enemy_frame >= 4){
+				enemy_frame = 0;
+				enemy_action  = 'STANDING';
+			}
+		}
+		else if(enemy_action  == 'PUNCH'){
+			if(enemy_frame == 2 && character1.left > character2.left - 60 && character1.left < character2.left + 5) {
+				character2.health = character2.health - 10;
+				console.log(character2.health);
+			}
+			document.getElementById(character).style.background = "url('ken.png') -" + enemy_frame * 70 + "px -160px";
+			enemy_frame = enemy_frame + 1;
+			if(enemy_frame >= 3){
+				enemy_frame = 0;
+				enemy_action  = 'STANDING';
+			}
+		}
+		else if(enemy_action  == 'ROUND_KICK'){
+			if(enemy_frame == 2 && character1.left > character2.left - 60 && character1.left < character2.left + 5) {
+				character2.health = character2.health - 10;
+			}
+			document.getElementById(character).style.background = "url('ken.png') -" + enemy_frame * 70 + "px -560px";
+			enemy_frame = enemy_frame + 1;
+			if(enemy_frame >= 5) {
+				enemy_frame = 0;
+				enemy_action  = 'STANDING';
+			}
+		}
+		else if(enemy_action  == 'SIDE_KICK'){
+			if(enemy_frame == 2 && character1.left > character2.left - 60 && character1.left < character2.left + 5) {
+				character2.health = character2.health - 10;
+				console.log(character2.health);
+			}
+			document.getElementById(character).style.background = "url('ken.png') -" + enemy_frame * 70 + "px -480px";
+			enemy_frame = enemy_frame + 1;
+			if(enemy_frame >= 5) {
+				enemy_frame = 0;
+				enemy_action  = 'STANDING';
+			}
+		}
+	} */
+
+
+    	/* function displayActions(character){
+		if(action == 'STANDING'){
+			document.getElementById(character).style.background = "url('ken.png') -" + which_frame * 70 + "px -80px";
+			which_frame = which_frame + 1;
+			if(which_frame >= 4){
+				which_frame = 0;
+			}
+		}
+		if(action == 'RIGHT' || action == 'LEFT'){
+			document.getElementById(character).style.background = "url('ken.png') -" + which_frame * 70 + "px -240px";
+			which_frame = which_frame + 1;
+			if(which_frame >= 4){
+				which_frame = 0;
+				action = 'STANDING';
+			}
+		}
+		if(action == 'DUCK'){
+			document.getElementById(character).style.background = "url('ken.png') -" + which_frame * 70 + "px -720px";
+			which_frame = which_frame + 1;
+			if(which_frame >= 1){
+				which_frame = 0;
+				action = 'STANDING';
+			}
+		}
+		else if(action == 'JUMP'){
+			document.getElementById(character).style.background = "url('ken.png') -" + which_frame * 70 + "px -640px";
+			which_frame = which_frame + 1;
+			if(which_frame == 4){
+				character1.top -= 40;
+			}
+			if(which_frame >= 7){
+				which_frame = 0;
+				character1.top = 185;
+				action = 'STANDING';
+			}
+		}
+		else if(action == 'PUNCH'){
+			if(which_frame == 2 && character1.left > character2.left - 60 && character1.left < character2.left + 5) {
+				character2.health = character2.health - 10;
+				console.log(character2.health);
+			}
+			document.getElementById(character).style.background = "url('ken.png') -" + which_frame * 70 + "px -160px";
+			which_frame = which_frame + 1;
+			if(which_frame >= 3){
+				which_frame = 0;
+				action = 'STANDING';
+			}
+		}
+		else if(action == 'ROUND_KICK'){
+			if(which_frame == 2 && character1.left > character2.left - 60 && character1.left < character2.left + 5) {
+				character2.health = character2.health - 10;
+			}
+			document.getElementById(character).style.background = "url('ken.png') -" + which_frame * 70 + "px -560px";
+			which_frame = which_frame + 1;
+			if(which_frame >= 5) {
+				which_frame = 0;
+				action = 'STANDING';
+			}
+		}
+		else if(action == 'SIDE_KICK'){
+			if(which_frame == 2 && character1.left > character2.left - 60 && character1.left < character2.left + 5) {
+				character2.health = character2.health - 10;
+				console.log(character2.health);
+			}
+			document.getElementById(character).style.background = "url('ken.png') -" + which_frame * 70 + "px -480px";
+			which_frame = which_frame + 1;
+			if(which_frame >= 5) {
+				which_frame = 0;
+				action = 'STANDING';
+			}
+		}
+		else if(action == 'WAVE'){
+			document.getElementById(character).style.background = "url('ken.png') -" + which_frame * 70 + "px 0px";
+			which_frame = which_frame + 1;
+			if (which_frame >= 4) {
+				which_frame = 0;
+				action = 'STANDING';
+			}
+		}
+	} */
+
+</script>
+</html>
