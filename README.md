@@ -1,1 +1,1 @@
-# Street-Fighter Web Game
+# Street Fighter Fighting Web Game
